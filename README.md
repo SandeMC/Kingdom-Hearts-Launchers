@@ -11,12 +11,12 @@ Simple and Clean launchers for Kingdom Hearts 1.5+2.5 and Kingdom Hearts 2.8.
 - Best game orders available, such as alphabetical and reverse chronological (i want to see a marathon with alphabetical 2 reverse)
 
 ## 1.5 Launcher
-[![1.5Launcher](https://img.shields.io/badge/1.5+2.5-Launcher-Download-blue.svg)](https://github.com/SandeMC/Kingdom-Hearts-Launchers/release/kh4-v1)
+[![1.5Launcher](https://img.shields.io/badge/1.5+2.5_Launcher-Download-blue.svg)](https://github.com/SandeMC/Kingdom-Hearts-Launchers/releases/kh4-v1)
 
 Just replace the `KINGDOM HEARTS HD 1.5+2.5 ReMIX.exe` executable (it doesn't do anything meaningful anyway).
 
 ## 2.8 Launcher
 
-[![2.8Launcher](https://img.shields.io/badge/2.8-Launcher-Download-blue.svg)](https://github.com/SandeMC/Kingdom-Hearts-Launchers/release/kh2-v1)
+[![2.8Launcher](https://img.shields.io/badge/2.8_Launcher-Download-blue.svg)](https://github.com/SandeMC/Kingdom-Hearts-Launchers/releases/kh2-v1)
 
 not yet
