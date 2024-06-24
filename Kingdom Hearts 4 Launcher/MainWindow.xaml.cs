@@ -103,6 +103,24 @@ namespace Kingdom_Hearts_4_Launcher
                 UseMelonMixOnDays = config.UseMelonMixOnDays;
                 UseMelonMixOnRecoded = config.UseMelonMixOnRecoded;
                 SelectedOrder = config.SelectedOrder;
+
+                if (UseMelonMixOnDays)
+                {
+                    days.Content = "Kingdom Hearts 358/2 Days (Melon Mix)";
+                }
+                else
+                {
+                    days.Content = "Kingdom Hearts 358/2 Days (Movie)";
+                }
+
+                if (UseMelonMixOnRecoded)
+                {
+                    recoded.Content = "Kingdom Hearts Re:coded (Melon Mix)";
+                }
+                else
+                {
+                    recoded.Content = "Kingdom Hearts Re:coded (Movie)";
+                }
             }
             else
             {
@@ -133,6 +151,24 @@ namespace Kingdom_Hearts_4_Launcher
                 if (configWindow.GameOrder != null && configWindow.GameOrder.Count > 0)
                 {
                     ReorderGames(configWindow.GameOrder.ToArray());
+                }
+
+                if (UseMelonMixOnDays)
+                {
+                    days.Content = "Kingdom Hearts 358/2 Days (Melon Mix)";
+                }
+                else
+                {
+                    days.Content = "Kingdom Hearts 358/2 Days (Movie)";
+                }
+
+                if (UseMelonMixOnRecoded)
+                {
+                    recoded.Content = "Kingdom Hearts Re:coded (Melon Mix)";
+                }
+                else
+                {
+                    recoded.Content = "Kingdom Hearts Re:coded (Movie)";
                 }
 
                 SaveGameOrder();
