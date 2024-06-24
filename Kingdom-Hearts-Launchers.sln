@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingdom Hearts 4 Launcher", "Kingdom Hearts 4 Launcher\Kingdom Hearts 4 Launcher.csproj", "{30D3FC74-FAA0-4916-99C5-D5389652C294}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingdom Hearts 2 Launcher", "Kingdom Hearts 2 Launcher\Kingdom Hearts 2 Launcher.csproj", "{F12C1FFE-8FCA-495C-BEC9-AE63926F744A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{30D3FC74-FAA0-4916-99C5-D5389652C294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D3FC74-FAA0-4916-99C5-D5389652C294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D3FC74-FAA0-4916-99C5-D5389652C294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F12C1FFE-8FCA-495C-BEC9-AE63926F744A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F12C1FFE-8FCA-495C-BEC9-AE63926F744A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F12C1FFE-8FCA-495C-BEC9-AE63926F744A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F12C1FFE-8FCA-495C-BEC9-AE63926F744A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
