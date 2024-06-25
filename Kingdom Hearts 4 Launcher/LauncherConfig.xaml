@@ -4,6 +4,7 @@
         Title="Launcher Config"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
+        SnapsToDevicePixels="True"
         ResizeMode="NoResize">
     <Grid>
         <StackPanel Margin="5">
@@ -14,7 +15,7 @@
                 <ComboBoxItem Content="Chronological"/>
                 <ComboBoxItem Content="Alphabetical"/>
                 <ComboBoxItem Content="Alphabetical 2"/>
-                <ComboBoxItem Content="Default reverse"/>
+                <ComboBoxItem Content="Official reverse"/>
                 <ComboBoxItem Content="Release reverse"/>
                 <ComboBoxItem Content="Chronological reverse"/>
                 <ComboBoxItem Content="Alphabetical reverse"/>
@@ -23,8 +24,10 @@
             </ComboBox>
 
             <CheckBox x:Name="SkipCopyrightScreenOnMoviesCheckBox" Content="Skip copyright screen on movies" IsChecked="True"/>
-            <CheckBox x:Name="SkipCopyrightScreenOnKH1CheckBox" Content="Skip copyright screen on Kingdom Hearts 1" Margin="0,5" IsChecked="True"/>
+            <CheckBox x:Name="SkipCopyrightScreenOnKH1CheckBox" Content="Skip copyright screen on Kingdom Hearts 1" Margin="0,5,0,5" IsChecked="True"/>
 
+            <Separator Height="1" Margin="10" />
+            
             <TextBlock Text="Melon Mix Path:"/>
             <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                 <TextBox HorizontalAlignment="Left" x:Name="melonmixdirectory" Width="235" IsEnabled="False" Height="20"/>
@@ -32,11 +35,26 @@
             </StackPanel>
 
             <CheckBox x:Name="UseMelonMixOnDaysCheckBox" Content="Use Melon Mix for 358/2 Days" Margin="0,10,0,0" IsEnabled="False"/>
-            <CheckBox x:Name="UseMelonMixOnRecodedCheckBox" Content="Use Melon Mix for Re:coded" Margin="0,5,0,0" IsEnabled="False"/>
+            <CheckBox x:Name="UseMelonMixOnRecodedCheckBox" Content="Use Melon Mix for Re:coded" Margin="0,5,0,5" IsEnabled="False"/>
+
+            <Separator Height="1" Margin="10" />
+            
+            <TextBlock Text="Your GBA Emulator Path:"/>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                <TextBox HorizontalAlignment="Left" x:Name="emulatordirectory" Width="235" IsEnabled="False" Height="20"/>
+                <Button Content="Browse" HorizontalAlignment="Left" Margin="5,0,0,0" Width="60" Click="Browseemu_Click" Height="20"/>
+            </StackPanel>
+            <TextBlock Text="Your Chain of Memories ROM Path:" Margin="0,2,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                <TextBox HorizontalAlignment="Left" x:Name="romdirectory" Width="235" IsEnabled="False" Height="20"/>
+                <Button Content="Browse" HorizontalAlignment="Left" Margin="5,0,0,0" Width="60" Click="Browserom_Click" Height="20"/>
+            </StackPanel>
+
+            <CheckBox x:Name="ComInsteadOfRecomCheckBox" Content="Replace Re:CoM with GBA CoM" Margin="0,10,0,0" IsEnabled="False"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                <Button Content="Save" Width="75" Click="SaveButton_Click"/>
-                <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="CancelButton_Click"/>
+                <Button Content="Save" Width="75" Click="SaveButton_Click" IsDefault="True"/>
+                <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="CancelButton_Click" IsCancel="True"/>
             </StackPanel>
         </StackPanel>
     </Grid>

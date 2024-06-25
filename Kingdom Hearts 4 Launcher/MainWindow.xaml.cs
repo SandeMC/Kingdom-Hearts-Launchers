@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -12,17 +11,20 @@ namespace Kingdom_Hearts_4_Launcher
     public partial class MainWindow : Window
     {
         private readonly string ConfigFilePath = "launcher_config.json";
+        public string SelectedOrder { get; private set; }
         public bool SkipCopyrightScreenOnMovies { get; private set; }
         public bool SkipCopyrightScreenOnKH1 { get; private set; }
         public string MelonMixPath { get; private set; }
         public bool UseMelonMixOnDays { get; private set; }
         public bool UseMelonMixOnRecoded { get; private set; }
-        public string SelectedOrder { get; private set; }
+        public string EmulatorPath { get; private set; }
+        public string RomPath { get; private set; }
+        public bool ComInsteadOfRecom { get; private set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            LoadGameOrder();
+            LoadConfig();
             if (!File.Exists("steam_appid.txt"))
             {
                 File.WriteAllText("steam_appid.txt", "2552430");
@@ -51,7 +53,7 @@ namespace Kingdom_Hearts_4_Launcher
             }
         }
 
-        private void SaveGameOrder()
+        private void SaveConfig()
         {
             var order = Games.Children.OfType<RadioButton>().Select(rb => rb.Name).ToList();
             var CheckedGame = Games.Children.OfType<RadioButton>().FirstOrDefault(rb => rb.IsChecked == true)?.Name;
@@ -59,20 +61,23 @@ namespace Kingdom_Hearts_4_Launcher
             var config = new GameOrderConfig
             {
                 Order = order,
+                SelectedOrder = SelectedOrder,
                 CheckedGame = CheckedGame,
                 SkipCopyrightScreenOnMovies = SkipCopyrightScreenOnMovies,
                 SkipCopyrightScreenOnKH1 = SkipCopyrightScreenOnKH1,
                 MelonMixPath = MelonMixPath,
                 UseMelonMixOnDays = UseMelonMixOnDays,
                 UseMelonMixOnRecoded = UseMelonMixOnRecoded,
-                SelectedOrder = SelectedOrder
+                EmulatorPath = EmulatorPath,
+                RomPath = RomPath,
+                ComInsteadOfRecom = ComInsteadOfRecom
             };
 
             var json = JsonConvert.SerializeObject(config, Formatting.Indented);
             File.WriteAllText(ConfigFilePath, json);
         }
 
-        private void LoadGameOrder()
+        private void LoadConfig()
         {
             if (File.Exists(ConfigFilePath))
             {
@@ -85,7 +90,7 @@ namespace Kingdom_Hearts_4_Launcher
                 catch
                 {
                     MessageBox.Show("Unable to read config file, settings will be reset.");
-                    SaveGameOrder();
+                    SaveConfig();
                     return;
                 }
 
@@ -102,63 +107,71 @@ namespace Kingdom_Hearts_4_Launcher
                         }
                     }
                 }
-
+                SelectedOrder = config.SelectedOrder;
                 SkipCopyrightScreenOnMovies = config.SkipCopyrightScreenOnMovies;
                 SkipCopyrightScreenOnKH1 = config.SkipCopyrightScreenOnKH1;
-                MelonMixPath = config.MelonMixPath;
-                UseMelonMixOnDays = config.UseMelonMixOnDays;
-                UseMelonMixOnRecoded = config.UseMelonMixOnRecoded;
-                SelectedOrder = config.SelectedOrder;
 
-                if (UseMelonMixOnDays)
-                {
-                    days.Content = "Kingdom Hearts 358/2 Days (Melon Mix)";
-                }
-                else
-                {
-                    days.Content = "Kingdom Hearts 358/2 Days (Movie)";
-                }
+                bool emuexists = !string.IsNullOrEmpty(config.EmulatorPath) && File.Exists(config.EmulatorPath);
+                bool romexists = !string.IsNullOrEmpty(config.RomPath) && File.Exists(config.RomPath);
 
-                if (UseMelonMixOnRecoded)
-                {
-                    recoded.Content = "Kingdom Hearts Re:coded (Melon Mix)";
-                }
-                else
-                {
-                    recoded.Content = "Kingdom Hearts Re:coded (Movie)";
-                }
+                MelonMixPath = !string.IsNullOrEmpty(config.MelonMixPath) && File.Exists(config.MelonMixPath)
+                                ? config.MelonMixPath
+                                : null;
+                UseMelonMixOnDays = MelonMixPath != null && config.UseMelonMixOnDays;
+                UseMelonMixOnRecoded = MelonMixPath != null && config.UseMelonMixOnRecoded;
+
+                EmulatorPath = emuexists ? config.EmulatorPath : null;
+                RomPath = romexists ? config.RomPath : null;
+
+                ComInsteadOfRecom = emuexists && romexists && config.ComInsteadOfRecom;
+
+                days.Content = UseMelonMixOnDays
+                                ? "Kingdom Hearts 358/2 Days (Melon Mix)"
+                                : "Kingdom Hearts 358/2 Days (Movie)";
+                recoded.Content = UseMelonMixOnRecoded
+                                ? "Kingdom Hearts Re:coded (Melon Mix)"
+                                : "Kingdom Hearts Re:coded (Movie)";
+                recom.Content = ComInsteadOfRecom
+                                ? "Kingdom Hearts: Chain of Memories (GBA)"
+                                : "Kingdom Hearts Re:Chain of Memories";
             }
             else
             {
                 SkipCopyrightScreenOnMovies = true;
                 SkipCopyrightScreenOnKH1 = true;
-                SaveGameOrder();
+                SaveConfig();
             }
         }
 
         private class GameOrderConfig
         {
             public List<string> Order { get; set; }
+            public string SelectedOrder { get; set; }
             public string CheckedGame { get; set; }
             public bool SkipCopyrightScreenOnMovies { get; set; }
             public bool SkipCopyrightScreenOnKH1 { get; set; }
             public string MelonMixPath { get; set; }
             public bool UseMelonMixOnDays { get; set; }
             public bool UseMelonMixOnRecoded { get; set; }
-            public string SelectedOrder { get; set; }
+            public string EmulatorPath { get; set; }
+            public string RomPath { get; set; }
+            public bool ComInsteadOfRecom { get; set; }
         }
 
         private void LauncherConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            var configWindow = new LauncherConfig(SkipCopyrightScreenOnMovies, SkipCopyrightScreenOnKH1, MelonMixPath, UseMelonMixOnDays, UseMelonMixOnRecoded, SelectedOrder);
+            var configWindow = new LauncherConfig(SelectedOrder, SkipCopyrightScreenOnMovies, SkipCopyrightScreenOnKH1, MelonMixPath, UseMelonMixOnDays, UseMelonMixOnRecoded, EmulatorPath, RomPath, ComInsteadOfRecom);
             if (configWindow.ShowDialog() == true)
             {
+                SelectedOrder = configWindow.SelectedOrder;
                 SkipCopyrightScreenOnMovies = configWindow.SkipCopyrightScreenOnMovies;
                 SkipCopyrightScreenOnKH1 = configWindow.SkipCopyrightScreenOnKH1;
                 MelonMixPath = configWindow.MelonMixPath;
                 UseMelonMixOnDays = configWindow.UseMelonMixOnDays;
                 UseMelonMixOnRecoded = configWindow.UseMelonMixOnRecoded;
-                SelectedOrder = configWindow.SelectedOrder;
+                EmulatorPath = configWindow.EmulatorPath;
+                RomPath = configWindow.RomPath;
+                ComInsteadOfRecom = configWindow.ComInsteadOfRecom;
 
                 if (configWindow.GameOrder != null && configWindow.GameOrder.Count > 0)
                 {
@@ -183,7 +196,16 @@ namespace Kingdom_Hearts_4_Launcher
                     recoded.Content = "Kingdom Hearts Re:coded (Movie)";
                 }
 
-                SaveGameOrder();
+                if (ComInsteadOfRecom)
+                {
+                    recom.Content = "Kingdom Hearts: Chain of Memories (GBA)";
+                }
+                else
+                {
+                    recom.Content = "Kingdom Hearts Re:Chain of Memories";
+                }
+
+                SaveConfig();
             }
         }
 
@@ -200,7 +222,14 @@ namespace Kingdom_Hearts_4_Launcher
             }
             else if (recom.IsChecked == true)
             {
-                LaunchGame("KINGDOM HEARTS Re_Chain of Memories.exe");
+                if (ComInsteadOfRecom)
+                {
+                    LaunchGame(EmulatorPath, $"\"{RomPath}\"");
+                }
+                else
+                {
+                    LaunchGame("KINGDOM HEARTS Re_Chain of Memories.exe");
+                }
             }
             else if (days.IsChecked == true)
             {
@@ -259,7 +288,7 @@ namespace Kingdom_Hearts_4_Launcher
                     StartInfo = startInfo
                 };
                 process.Start();
-                SaveGameOrder();
+                SaveConfig();
                 Close();
             }
             else

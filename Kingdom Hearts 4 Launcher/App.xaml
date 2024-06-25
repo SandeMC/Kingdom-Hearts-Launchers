@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:Kingdom_Hearts_4_Launcher"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

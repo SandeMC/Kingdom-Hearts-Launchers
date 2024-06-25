@@ -12,8 +12,8 @@ namespace Kingdom_Hearts_2_Launcher
     public partial class MainWindow : Window
     {
         private readonly string ConfigFilePath = "launcher_config.json";
-        public bool SkipCopyrightScreenOnMovie { get; private set; }
         public string SelectedOrder { get; private set; }
+        public bool SkipCopyrightScreenOnMovie { get; private set; }
 
         public MainWindow()
         {
@@ -56,8 +56,8 @@ namespace Kingdom_Hearts_2_Launcher
             var config = new GameOrderConfig
             {
                 Order = order,
-                CheckedGame = CheckedGame,
                 SelectedOrder = SelectedOrder,
+                CheckedGame = CheckedGame,
                 SkipCopyrightScreenOnMovie = SkipCopyrightScreenOnMovie
             };
 
@@ -107,8 +107,8 @@ namespace Kingdom_Hearts_2_Launcher
         private class GameOrderConfig
         {
             public List<string> Order { get; set; }
-            public string CheckedGame { get; set; }
             public string SelectedOrder { get; set; }
+            public string CheckedGame { get; set; }
             public bool SkipCopyrightScreenOnMovie { get; set; }
         }
 

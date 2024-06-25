@@ -10,15 +10,21 @@ namespace Kingdom_Hearts_4_Launcher
 {
     public partial class LauncherConfig : Window
     {
+        public List<string> GameOrder { get; private set; }
+        public string SelectedOrder { get; private set; }
         public bool SkipCopyrightScreenOnMovies { get; private set; }
         public bool SkipCopyrightScreenOnKH1 { get; private set; }
         public string MelonMixPath { get; private set; }
         public bool UseMelonMixOnDays { get; private set; }
         public bool UseMelonMixOnRecoded { get; private set; }
-        public List<string> GameOrder { get; private set; }
-        public string SelectedOrder { get; private set; }
+        public string EmulatorPath { get; private set; }
+        public string RomPath { get; private set; }
+        public bool ComInsteadOfRecom { get; private set; }
 
-        public LauncherConfig(bool skipCopyrightScreenOnMovies, bool skipCopyrightScreenOnKH1, string melonMixPath, bool useMelonMixOnDays, bool useMelonMixOnRecoded, string selectedOrder)
+        private bool romexists = false;
+        private bool emuexists = false;
+
+        public LauncherConfig(string selectedOrder, bool skipCopyrightScreenOnMovies, bool skipCopyrightScreenOnKH1, string melonMixPath, bool useMelonMixOnDays, bool useMelonMixOnRecoded, string emulatorPath, string romPath, bool comInsteadOfRecom)
         {
             InitializeComponent();
 
@@ -33,13 +39,45 @@ namespace Kingdom_Hearts_4_Launcher
                 melonmixdirectory.Text = null;
                 UseMelonMixOnDaysCheckBox.IsEnabled = false;
                 UseMelonMixOnRecodedCheckBox.IsEnabled = false;
+                useMelonMixOnDays = false;
+                useMelonMixOnRecoded = false;
             }
 
+            if (!string.IsNullOrEmpty(emulatorPath) && File.Exists(emulatorPath))
+            {
+                emulatordirectory.Text = emulatorPath;
+                emuexists = true;
+            }
+            else
+            {
+                emulatordirectory.Text = null;
+            }
+
+            if (!string.IsNullOrEmpty(romPath) && File.Exists(romPath))
+            {
+                romdirectory.Text = romPath;
+                romexists = true;
+            }
+            else
+            {
+                romdirectory.Text = null;
+            }
+
+            if (emuexists && romexists)
+            {
+                ComInsteadOfRecomCheckBox.IsEnabled = true;
+            }
+            else
+            {
+                comInsteadOfRecom = false;
+            }
+
+            SelectedOrder = selectedOrder;
             SkipCopyrightScreenOnMoviesCheckBox.IsChecked = skipCopyrightScreenOnMovies;
             SkipCopyrightScreenOnKH1CheckBox.IsChecked = skipCopyrightScreenOnKH1;
             UseMelonMixOnDaysCheckBox.IsChecked = useMelonMixOnDays;
             UseMelonMixOnRecodedCheckBox.IsChecked = useMelonMixOnRecoded;
-            SelectedOrder = selectedOrder;
+            ComInsteadOfRecomCheckBox.IsChecked = comInsteadOfRecom;
 
             foreach (ComboBoxItem item in PresetsComboBox.Items)
             {
@@ -81,15 +119,55 @@ namespace Kingdom_Hearts_4_Launcher
             }
         }
 
+        private void Browseemu_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "All files (*.*)|*.*"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MessageBox.Show("Keep in mind this application does not verify whether what you selected is a valid GBA emulator.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                emulatordirectory.Text = openFileDialog.FileName;
+                emuexists = true;
+                if (emuexists && romexists)
+                {
+                    ComInsteadOfRecomCheckBox.IsEnabled = true;
+                }
+            }
+        }
+
+        private void Browserom_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "All files (*.*)|*.*"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MessageBox.Show("Keep in mind this application does not verify whether what you selected is a valid Chain of Memories ROM.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                romdirectory.Text = openFileDialog.FileName;
+                romexists = true;
+                if (emuexists && romexists)
+                {
+                    ComInsteadOfRecomCheckBox.IsEnabled = true;
+                }
+            }
+        }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            SelectedOrder = (PresetsComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
             SkipCopyrightScreenOnMovies = SkipCopyrightScreenOnMoviesCheckBox.IsChecked ?? false;
             SkipCopyrightScreenOnKH1 = SkipCopyrightScreenOnKH1CheckBox.IsChecked ?? false;
             MelonMixPath = melonmixdirectory.Text;
             UseMelonMixOnDays = UseMelonMixOnDaysCheckBox.IsChecked ?? false;
             UseMelonMixOnRecoded = UseMelonMixOnRecodedCheckBox.IsChecked ?? false;
-            SelectedOrder = (PresetsComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            EmulatorPath = emulatordirectory.Text;
+            RomPath = romdirectory.Text;
+            ComInsteadOfRecom = ComInsteadOfRecomCheckBox.IsChecked ?? false;
 
             DialogResult = true;
             Close();
@@ -123,7 +201,7 @@ namespace Kingdom_Hearts_4_Launcher
                     case "Alphabetical 2":
                         GameOrder = new List<string> { "bbs", "kh1", "kh2", "recom", "recoded", "days" };
                         break;
-                    case "Default reverse":
+                    case "Official reverse":
                         GameOrder = new List<string> { "recoded", "bbs", "kh2", "days", "recom", "kh1" };
                         break;
                     case "Release reverse":
