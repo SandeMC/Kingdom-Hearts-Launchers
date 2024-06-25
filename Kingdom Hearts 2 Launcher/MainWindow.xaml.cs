@@ -12,6 +12,7 @@ namespace Kingdom_Hearts_2_Launcher
     public partial class MainWindow : Window
     {
         private readonly string ConfigFilePath = "launcher_config.json";
+        public bool SkipCopyrightScreenOnMovie { get; private set; }
         public string SelectedOrder { get; private set; }
 
         public MainWindow()
@@ -22,7 +23,7 @@ namespace Kingdom_Hearts_2_Launcher
             {
                 File.WriteAllText("steam_appid.txt", "2552440");
             }
-            if (!File.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/steam_appid.txt"))
+            if (!File.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/steam_appid.txt") && Directory.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/"))
             {
                 File.WriteAllText("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/steam_appid.txt", "2552440");
             }
@@ -56,7 +57,8 @@ namespace Kingdom_Hearts_2_Launcher
             {
                 Order = order,
                 CheckedGame = CheckedGame,
-                SelectedOrder = SelectedOrder
+                SelectedOrder = SelectedOrder,
+                SkipCopyrightScreenOnMovie = SkipCopyrightScreenOnMovie
             };
 
             var json = JsonConvert.SerializeObject(config, Formatting.Indented);
@@ -97,6 +99,7 @@ namespace Kingdom_Hearts_2_Launcher
             }
             else
             {
+                SkipCopyrightScreenOnMovie = true;
                 SaveGameOrder();
             }
         }
@@ -106,14 +109,16 @@ namespace Kingdom_Hearts_2_Launcher
             public List<string> Order { get; set; }
             public string CheckedGame { get; set; }
             public string SelectedOrder { get; set; }
+            public bool SkipCopyrightScreenOnMovie { get; set; }
         }
 
         private void LauncherConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            var configWindow = new LauncherConfig(SelectedOrder);
+            var configWindow = new LauncherConfig(SelectedOrder, SkipCopyrightScreenOnMovie);
             if (configWindow.ShowDialog() == true)
             {
                 SelectedOrder = configWindow.SelectedOrder;
+                SkipCopyrightScreenOnMovie = configWindow.SkipCopyrightScreenOnMovie;
 
                 if (configWindow.GameOrder != null && configWindow.GameOrder.Count > 0)
                 {
@@ -129,36 +134,39 @@ namespace Kingdom_Hearts_2_Launcher
 
             if (khddd.IsChecked == true)
             {
-                LaunchGame("KINGDOM HEARTS FINAL MIX.exe");
+                LaunchGame("KINGDOM HEARTS Dream Drop Distance.exe");
             }
-            if (bbs02.IsChecked == true)
+            else if (bbs02.IsChecked == true)
             {
-                if (File.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe"))
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe";
-                    startInfo.WorkingDirectory = System.IO.Path.GetDirectoryName("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe");
-                    Process process = new Process();
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    Close();
-                }
-                else
-                {
-                    MessageBox.Show("Selected game's executable not found");
-                }
+                LaunchGame("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe");
             }
-            if (xbackcover.IsChecked == true)
+            else if (xbackcover.IsChecked == true)
             {
-                LaunchGame("KINGDOM HEARTS HD 2.8 Launcher.exe");
+                string arg = "";
+                if (SkipCopyrightScreenOnMovie)
+                {
+                    arg = "-reboot=true";
+                }
+                LaunchGame("KINGDOM HEARTS HD 2.8 Launcher.exe", arg);
             }
         }
 
-        private void LaunchGame(string exeName)
+        private void LaunchGame(string exeName, string arguments = "")
         {
             if (File.Exists(exeName))
             {
-                Process.Start(exeName);
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = exeName,
+                    WorkingDirectory = Path.GetDirectoryName(exeName),
+                    Arguments = arguments
+                };
+                Process process = new Process
+                {
+                    StartInfo = startInfo
+                };
+                process.Start();
+                SaveGameOrder();
                 Close();
             }
             else

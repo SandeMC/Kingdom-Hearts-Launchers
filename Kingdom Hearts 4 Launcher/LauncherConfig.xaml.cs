@@ -10,13 +10,15 @@ namespace Kingdom_Hearts_4_Launcher
 {
     public partial class LauncherConfig : Window
     {
+        public bool SkipCopyrightScreenOnMovies { get; private set; }
+        public bool SkipCopyrightScreenOnKH1 { get; private set; }
         public string MelonMixPath { get; private set; }
         public bool UseMelonMixOnDays { get; private set; }
         public bool UseMelonMixOnRecoded { get; private set; }
         public List<string> GameOrder { get; private set; }
         public string SelectedOrder { get; private set; }
 
-        public LauncherConfig(string melonMixPath, bool useMelonMixOnDays, bool useMelonMixOnRecoded, string selectedOrder)
+        public LauncherConfig(bool skipCopyrightScreenOnMovies, bool skipCopyrightScreenOnKH1, string melonMixPath, bool useMelonMixOnDays, bool useMelonMixOnRecoded, string selectedOrder)
         {
             InitializeComponent();
 
@@ -33,6 +35,8 @@ namespace Kingdom_Hearts_4_Launcher
                 UseMelonMixOnRecodedCheckBox.IsEnabled = false;
             }
 
+            SkipCopyrightScreenOnMoviesCheckBox.IsChecked = skipCopyrightScreenOnMovies;
+            SkipCopyrightScreenOnKH1CheckBox.IsChecked = skipCopyrightScreenOnKH1;
             UseMelonMixOnDaysCheckBox.IsChecked = useMelonMixOnDays;
             UseMelonMixOnRecodedCheckBox.IsChecked = useMelonMixOnRecoded;
             SelectedOrder = selectedOrder;
@@ -53,12 +57,12 @@ namespace Kingdom_Hearts_4_Launcher
                 {
                     OpenFileDialog openFileDialog = new OpenFileDialog
                     {
-                        Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
+                        Filter = "All files (*.*)|*.*"
                     };
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    if (Path.GetFileName(openFileDialog.FileName) == "khDaysMM.exe")
+                    if (Path.GetFileName(openFileDialog.FileName).Contains("khDaysMM") || Path.GetFileName(openFileDialog.FileName).Contains("MelonMix"))
                     {
                         melonmixdirectory.Text = openFileDialog.FileName;
                         UseMelonMixOnDaysCheckBox.IsEnabled = true;
@@ -67,7 +71,7 @@ namespace Kingdom_Hearts_4_Launcher
                     }
                     else
                     {
-                        MessageBox.Show("Please select the khDaysMM.exe file.", "Invalid File", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Please select the khDaysMM or MelonMix executable.", "Invalid File", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -80,6 +84,8 @@ namespace Kingdom_Hearts_4_Launcher
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            SkipCopyrightScreenOnMovies = SkipCopyrightScreenOnMoviesCheckBox.IsChecked ?? false;
+            SkipCopyrightScreenOnKH1 = SkipCopyrightScreenOnKH1CheckBox.IsChecked ?? false;
             MelonMixPath = melonmixdirectory.Text;
             UseMelonMixOnDays = UseMelonMixOnDaysCheckBox.IsChecked ?? false;
             UseMelonMixOnRecoded = UseMelonMixOnRecodedCheckBox.IsChecked ?? false;
@@ -102,7 +108,7 @@ namespace Kingdom_Hearts_4_Launcher
                 string selectedPreset = selectedItem.Content.ToString();
                 switch (selectedPreset)
                 {
-                    case "Default":
+                    case "Official":
                         GameOrder = new List<string> { "kh1", "recom", "days", "kh2", "bbs", "recoded" };
                         break;
                     case "Release":

@@ -12,8 +12,9 @@ namespace Kingdom_Hearts_2_Launcher
     {
         public List<string> GameOrder { get; private set; }
         public string SelectedOrder { get; private set; }
+        public bool SkipCopyrightScreenOnMovie { get; private set; }
 
-        public LauncherConfig(string selectedOrder)
+        public LauncherConfig(string selectedOrder, bool skipCopyrightScreenOnMovie)
         {
             InitializeComponent();
             SelectedOrder = selectedOrder;
@@ -26,11 +27,14 @@ namespace Kingdom_Hearts_2_Launcher
                     break;
                 }
             }
+
+            SkipCopyrightScreenOnMovieCheckBox.IsChecked = skipCopyrightScreenOnMovie;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SelectedOrder = (PresetsComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            SkipCopyrightScreenOnMovie = SkipCopyrightScreenOnMovieCheckBox.IsChecked ?? false;
 
             DialogResult = true;
             Close();
@@ -49,7 +53,7 @@ namespace Kingdom_Hearts_2_Launcher
                 string selectedPreset = selectedItem.Content.ToString();
                 switch (selectedPreset)
                 {
-                    case "Default":
+                    case "Official":
                         GameOrder = new List<string> { "khddd", "bbs02", "xbackcover" };
                         break;
                     case "Chronological":

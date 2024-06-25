@@ -9,14 +9,16 @@
         <StackPanel Margin="5">
             <TextBlock Text="Game order:" Margin="0,0,0,5"/>
             <ComboBox x:Name="PresetsComboBox" SelectionChanged="PresetsComboBox_SelectionChanged" Width="300" Margin="0,0,0,10">
-                <ComboBoxItem Content="Default" IsSelected="True"/>
+                <ComboBoxItem Content="Official" IsSelected="True"/>
                 <ComboBoxItem Content="Chronological"/>
                 <ComboBoxItem Content="Alphabetical"/>
                 <ComboBoxItem Content="Alphabetical reverse"/>
                 <ComboBoxItem Content="Random"/>
             </ComboBox>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+            <CheckBox x:Name="SkipCopyrightScreenOnMovieCheckBox" Content="Skip copyright screen on χ Back Cover" IsChecked="True"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                 <Button Content="Save" Width="75" Click="SaveButton_Click"/>
                 <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="CancelButton_Click"/>
             </StackPanel>

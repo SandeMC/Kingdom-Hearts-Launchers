@@ -12,6 +12,8 @@ namespace Kingdom_Hearts_4_Launcher
     public partial class MainWindow : Window
     {
         private readonly string ConfigFilePath = "launcher_config.json";
+        public bool SkipCopyrightScreenOnMovies { get; private set; }
+        public bool SkipCopyrightScreenOnKH1 { get; private set; }
         public string MelonMixPath { get; private set; }
         public bool UseMelonMixOnDays { get; private set; }
         public bool UseMelonMixOnRecoded { get; private set; }
@@ -58,6 +60,8 @@ namespace Kingdom_Hearts_4_Launcher
             {
                 Order = order,
                 CheckedGame = CheckedGame,
+                SkipCopyrightScreenOnMovies = SkipCopyrightScreenOnMovies,
+                SkipCopyrightScreenOnKH1 = SkipCopyrightScreenOnKH1,
                 MelonMixPath = MelonMixPath,
                 UseMelonMixOnDays = UseMelonMixOnDays,
                 UseMelonMixOnRecoded = UseMelonMixOnRecoded,
@@ -99,6 +103,8 @@ namespace Kingdom_Hearts_4_Launcher
                     }
                 }
 
+                SkipCopyrightScreenOnMovies = config.SkipCopyrightScreenOnMovies;
+                SkipCopyrightScreenOnKH1 = config.SkipCopyrightScreenOnKH1;
                 MelonMixPath = config.MelonMixPath;
                 UseMelonMixOnDays = config.UseMelonMixOnDays;
                 UseMelonMixOnRecoded = config.UseMelonMixOnRecoded;
@@ -124,6 +130,8 @@ namespace Kingdom_Hearts_4_Launcher
             }
             else
             {
+                SkipCopyrightScreenOnMovies = true;
+                SkipCopyrightScreenOnKH1 = true;
                 SaveGameOrder();
             }
         }
@@ -132,6 +140,8 @@ namespace Kingdom_Hearts_4_Launcher
         {
             public List<string> Order { get; set; }
             public string CheckedGame { get; set; }
+            public bool SkipCopyrightScreenOnMovies { get; set; }
+            public bool SkipCopyrightScreenOnKH1 { get; set; }
             public string MelonMixPath { get; set; }
             public bool UseMelonMixOnDays { get; set; }
             public bool UseMelonMixOnRecoded { get; set; }
@@ -140,9 +150,11 @@ namespace Kingdom_Hearts_4_Launcher
 
         private void LauncherConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            var configWindow = new LauncherConfig(MelonMixPath, UseMelonMixOnDays, UseMelonMixOnRecoded, SelectedOrder);
+            var configWindow = new LauncherConfig(SkipCopyrightScreenOnMovies, SkipCopyrightScreenOnKH1, MelonMixPath, UseMelonMixOnDays, UseMelonMixOnRecoded, SelectedOrder);
             if (configWindow.ShowDialog() == true)
             {
+                SkipCopyrightScreenOnMovies = configWindow.SkipCopyrightScreenOnMovies;
+                SkipCopyrightScreenOnKH1 = configWindow.SkipCopyrightScreenOnKH1;
                 MelonMixPath = configWindow.MelonMixPath;
                 UseMelonMixOnDays = configWindow.UseMelonMixOnDays;
                 UseMelonMixOnRecoded = configWindow.UseMelonMixOnRecoded;
@@ -177,62 +189,77 @@ namespace Kingdom_Hearts_4_Launcher
 
         private void Launch_Click(object sender, RoutedEventArgs e)
         {
-            // melon mix stuff
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = MelonMixPath;
-            startInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(MelonMixPath);
-
             if (kh1.IsChecked == true)
             {
-                LaunchGame("KINGDOM HEARTS FINAL MIX.exe");
+                string arg = "";
+                if (SkipCopyrightScreenOnKH1)
+                {
+                    arg = "-reboot=true";
+                }
+                LaunchGame("KINGDOM HEARTS FINAL MIX.exe", arg);
             }
-            if (recom.IsChecked == true)
+            else if (recom.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS Re_Chain of Memories.exe");
             }
-            if (days.IsChecked == true)
+            else if (days.IsChecked == true)
             {
                 if (UseMelonMixOnDays)
                 {
-                    Process process = new Process();
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    Close();
+                    LaunchGame(MelonMixPath);
                 }
                 else
                 {
-                    LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe");
+                    string arg = "";
+                    if (SkipCopyrightScreenOnMovies)
+                    {
+                        arg = "-reboot=true";
+                    }
+                    LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe", arg);
                 }
             }
-            if (kh2.IsChecked == true)
+            else if (kh2.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS II FINAL MIX.exe");
             }
-            if (bbs.IsChecked == true)
+            else if (bbs.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS Birth by Sleep FINAL MIX.exe");
             }
-            if (recoded.IsChecked == true)
+            else if (recoded.IsChecked == true)
             {
                 if (UseMelonMixOnRecoded)
                 {
-                    Process process = new Process();
-                    process.StartInfo = startInfo;
-                    process.Start();
                     Close();
                 }
                 else
                 {
-                    LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe");
+                    string arg = "";
+                    if (SkipCopyrightScreenOnMovies)
+                    {
+                        arg = "-reboot=true";
+                    }
+                    LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe", arg);
                 }
             }
         }
 
-        private void LaunchGame(string exeName)
+        private void LaunchGame(string exeName, string arguments = "")
         {
             if (File.Exists(exeName))
             {
-                Process.Start(exeName);
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = exeName,
+                    WorkingDirectory = Path.GetDirectoryName(exeName),
+                    Arguments = arguments
+                };
+                Process process = new Process
+                {
+                    StartInfo = startInfo
+                };
+                process.Start();
+                SaveGameOrder();
                 Close();
             }
             else

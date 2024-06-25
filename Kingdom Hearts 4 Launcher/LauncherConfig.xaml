@@ -9,7 +9,7 @@
         <StackPanel Margin="5">
             <TextBlock Text="Game order:" Margin="0,0,0,5"/>
             <ComboBox x:Name="PresetsComboBox" SelectionChanged="PresetsComboBox_SelectionChanged" Width="300" Margin="0,0,0,10">
-                <ComboBoxItem Content="Default" IsSelected="True"/>
+                <ComboBoxItem Content="Official" IsSelected="True"/>
                 <ComboBoxItem Content="Release"/>
                 <ComboBoxItem Content="Chronological"/>
                 <ComboBoxItem Content="Alphabetical"/>
@@ -21,6 +21,9 @@
                 <ComboBoxItem Content="Alphabetical 2 reverse"/>
                 <ComboBoxItem Content="Random"/>
             </ComboBox>
+
+            <CheckBox x:Name="SkipCopyrightScreenOnMoviesCheckBox" Content="Skip copyright screen on movies" IsChecked="True"/>
+            <CheckBox x:Name="SkipCopyrightScreenOnKH1CheckBox" Content="Skip copyright screen on Kingdom Hearts 1" Margin="0,5" IsChecked="True"/>
 
             <TextBlock Text="Melon Mix Path:"/>
             <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
