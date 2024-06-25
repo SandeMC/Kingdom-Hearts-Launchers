@@ -19,8 +19,8 @@
             <CheckBox x:Name="SkipCopyrightScreenOnMovieCheckBox" Content="Skip copyright screen on χ Back Cover" IsChecked="True"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button Content="Save" Width="75" Click="SaveButton_Click"/>
-                <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="CancelButton_Click"/>
+                <Button Content="Save" Width="75" Click="SaveButton_Click" IsDefault="True"/>
+                <Button Content="Cancel" Width="75" Margin="5,0,0,0" Click="CancelButton_Click" IsCancel="True"/>
             </StackPanel>
         </StackPanel>
     </Grid>

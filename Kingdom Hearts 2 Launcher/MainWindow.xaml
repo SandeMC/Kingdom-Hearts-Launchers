@@ -19,7 +19,7 @@
                 <RadioButton x:Name="xbackcover" Content="Kingdom Hearts χ Back Cover (Movie)" Margin="0,2"/>
             </StackPanel>
             <StackPanel>
-                <Button Content="Launch" Margin="0,5,0,0" Width="230" Height="25" FontWeight="Bold" Click="Launch_Click"/>
+                <Button Content="Launch" Margin="0,5,0,0" Width="230" Height="25" FontWeight="Bold" Click="Launch_Click" IsDefault="True"/>
                 <Button Content="Launcher Config" Margin="0,5, 0, 0" Width="230" Height="25" Click="LauncherConfigButton_Click"/>
             </StackPanel>
         </StackPanel>
