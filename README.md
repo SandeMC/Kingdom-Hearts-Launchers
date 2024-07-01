@@ -1,7 +1,7 @@
 # Kingdom Hearts Launchers
 Simple and Clean launchers for Kingdom Hearts 1.5+2.5 and Kingdom Hearts 2.8.
 ![image](https://github.com/SandeMC/Kingdom-Hearts-Launchers/assets/70141395/680e8a16-b988-4553-871e-6fba91a47558)
-![image](https://github.com/SandeMC/Kingdom-Hearts-Launchers/assets/70141395/265388b2-1016-4f14-a5cc-8af5e6ca553f)
+![image](https://github.com/SandeMC/Kingdom-Hearts-Launchers/assets/70141395/e28fb2c2-6e1b-474f-bb74-502bf86b9b31)
 
 > [!CAUTION]
 > This is only compatible with the Steam releases. Due to the nature of how Epic Games version works, these launchers cannot be made compatible with it.
