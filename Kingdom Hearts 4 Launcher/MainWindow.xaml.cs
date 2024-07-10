@@ -235,7 +235,18 @@ namespace Kingdom_Hearts_4_Launcher
             {
                 if (UseMelonMixOnDays)
                 {
-                    LaunchGame(MelonMixPath);
+                    if (File.Exists($"{Path.GetDirectoryName(MelonMixPath)}\\roms\\days.nds"))
+                    {
+                        LaunchGame(MelonMixPath, "roms/days.nds");
+                    }
+                    else if (File.Exists($"{Path.GetDirectoryName(MelonMixPath)}\\roms\\game.nds"))
+                    {
+                        LaunchGame(MelonMixPath);
+                    }
+                    else
+                    {
+                        MessageBox.Show("You don't have a 358/2 Days ROM in the 'roms' folder of Melon Mix.");
+                    }
                 }
                 else
                 {
@@ -259,7 +270,14 @@ namespace Kingdom_Hearts_4_Launcher
             {
                 if (UseMelonMixOnRecoded)
                 {
-                    Close();
+                    if (File.Exists($"{Path.GetDirectoryName(MelonMixPath)}\\roms\\recoded.nds"))
+                    {
+                        LaunchGame(MelonMixPath, "roms/recoded.nds");
+                    }
+                    else
+                    {
+                        MessageBox.Show("You don't have a Re:coded ROM in the 'roms' folder of Melon Mix.");
+                    }
                 }
                 else
                 {
