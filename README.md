@@ -15,7 +15,11 @@ Simple and Clean launchers for Kingdom Hearts 1.5+2.5 and Kingdom Hearts 2.8.
 - UI-less launching via launch options (see below)
 
 ## Installation
-Go to the [Latest release](https://github.com/SandeMC/Kingdom-Hearts-Launchers/releases/latest) for instructions.
+You can either replace the original launcher in entirety and use launch options below if desired, or you can use Steam's native launch options for better compatibility with the Big Picture mode (Steam Deck etc).
+### Replacing the original launcher
+Unpack and replace `KINGDOM HEARTS HD 1.5+2.5 ReMIX.exe` (or `KINGDOM HEARTS HD 2.8 Final Chapter Prologue.exe` for 2.8) in the game folder.
+### Steam's native launch options
+In the archive, open the `Launch Options` folder and unpack `LauncherConfig.exe` (or `LauncherConfig2.exe` for 2.8) into the game folder, then follow [this guide](https://gist.github.com/TheConfuZzledDude/9f98dcd0fc723ffaf04fea1af95c08ca) using the provided `modifications.json` file.
 
 ## Launch options
 This launcher features several optional launch options to launch the games without a UI (can help to avoid interrupting gamepad usage in Big Picture mode, for example). Add them to Steam's game launch options or shortcut's properties.
@@ -31,7 +35,7 @@ You still need the launcher to configure how the games are launched, however.
 * -bbs - launches Birth by Sleep
 * -recoded - launches Re:coded
 
-## 2.8 Launcher
+### 2.8 Launcher
 * -skipLauncher - launches the last game you launched via the launcher
 * -ddd - launches Dream Drop Distance
 * -bbs02 - launches Birth by Sleep 0.2
