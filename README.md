@@ -12,9 +12,30 @@ Simple and Clean launchers for Kingdom Hearts 1.5+2.5 and Kingdom Hearts 2.8.
 - Launching Melon Mix instead of game's movie implementations of 358/2 Days and Re:coded
 - Launching GBA Chain of Memories instead of Re:Chain of Memories
 - Best game orders available, such as alphabetical and reverse chronological (i want to see a marathon with alphabetical 2 reverse)
+- UI-less launching via launch options (see below)
 
 ## Installation
 Go to the [Latest release](https://github.com/SandeMC/Kingdom-Hearts-Launchers/releases/latest) for instructions.
+
+## Launch options
+This launcher features several optional launch options to launch the games without a UI (can help to avoid interrupting gamepad usage in Big Picture mode, for example). Add them to Steam's game launch options or shortcut's properties.
+
+You still need the launcher to configure how the games are launched, however.
+
+### 1.5+2.5 Launcher
+* -skipLauncher - launches the last game you launched via the launcher
+* -kh1 - launches KH1
+* -recom - launches Re: Chain of Memories
+* -days - launches 358/2 Days
+* -kh2 - launches KH2
+* -bbs - launches Birth by Sleep
+* -recoded - launches Re:coded
+
+## 2.8 Launcher
+* -skipLauncher - launches the last game you launched via the launcher
+* -ddd - launches Dream Drop Distance
+* -bbs02 - launches Birth by Sleep 0.2
+* -backcover - Launches X Back Cover
 
 ## Demo
 ### Official Launcher

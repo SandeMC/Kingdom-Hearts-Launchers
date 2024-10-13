@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
+using System;
 
 namespace Kingdom_Hearts_4_Launcher
 {
@@ -21,13 +22,37 @@ namespace Kingdom_Hearts_4_Launcher
         public string RomPath { get; private set; }
         public bool ComInsteadOfRecom { get; private set; }
 
-        public MainWindow()
+        public MainWindow() : this(new string[0])
+        {
+        }
+        public MainWindow(string[] args)
         {
             InitializeComponent();
             LoadConfig();
             if (!File.Exists("steam_appid.txt"))
             {
                 File.WriteAllText("steam_appid.txt", "2552430");
+            }
+
+            if (args != null && args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    if (arg.Equals("-kh1", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-recom", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-days", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-kh2", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-bbs", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-recoded", StringComparison.OrdinalIgnoreCase)
+                        )
+                    {
+                        LaunchFun(arg);
+                    }
+                    else if (arg.Equals("-skipLauncher", StringComparison.OrdinalIgnoreCase))
+                    {
+                        LaunchFun();
+                    }
+                }
             }
         }
 
@@ -211,7 +236,11 @@ namespace Kingdom_Hearts_4_Launcher
 
         private void Launch_Click(object sender, RoutedEventArgs e)
         {
-            if (kh1.IsChecked == true)
+            LaunchFun();
+        }
+        private void LaunchFun(string selectedGame = null)
+        {
+            if (selectedGame!= null && selectedGame=="-kh1" || (kh1.IsChecked == true))
             {
                 string arg = "";
                 if (SkipCopyrightScreenOnKH1)
@@ -220,7 +249,7 @@ namespace Kingdom_Hearts_4_Launcher
                 }
                 LaunchGame("KINGDOM HEARTS FINAL MIX.exe", arg);
             }
-            else if (recom.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-recom" || (recom.IsChecked == true))
             {
                 if (ComInsteadOfRecom)
                 {
@@ -231,7 +260,7 @@ namespace Kingdom_Hearts_4_Launcher
                     LaunchGame("KINGDOM HEARTS Re_Chain of Memories.exe");
                 }
             }
-            else if (days.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-days" || (days.IsChecked == true))
             {
                 if (UseMelonMixOnDays)
                 {
@@ -258,15 +287,15 @@ namespace Kingdom_Hearts_4_Launcher
                     LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe", arg);
                 }
             }
-            else if (kh2.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-kh2" || (kh2.IsChecked == true))
             {
                 LaunchGame("KINGDOM HEARTS II FINAL MIX.exe");
             }
-            else if (bbs.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-bbs" || (bbs.IsChecked == true))
             {
                 LaunchGame("KINGDOM HEARTS Birth by Sleep FINAL MIX.exe");
             }
-            else if (recoded.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-recoded" || (recoded.IsChecked == true))
             {
                 if (UseMelonMixOnRecoded)
                 {

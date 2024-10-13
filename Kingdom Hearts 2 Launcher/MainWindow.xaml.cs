@@ -15,7 +15,11 @@ namespace Kingdom_Hearts_2_Launcher
         public string SelectedOrder { get; private set; }
         public bool SkipCopyrightScreenOnMovie { get; private set; }
 
-        public MainWindow()
+        public MainWindow() : this(new string[0])
+        {
+        }
+
+        public MainWindow(string[] args)
         {
             InitializeComponent();
             LoadGameOrder();
@@ -26,6 +30,24 @@ namespace Kingdom_Hearts_2_Launcher
             if (!File.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/steam_appid.txt") && Directory.Exists("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/"))
             {
                 File.WriteAllText("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/steam_appid.txt", "2552440");
+            }
+
+            if (args != null && args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    if (arg.Equals("-dds", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-bbs02", StringComparison.OrdinalIgnoreCase) ||
+                        arg.Equals("-backcover", StringComparison.OrdinalIgnoreCase)
+                        )
+                    {
+                        LaunchFun(arg);
+                    }
+                    if (arg.Equals("-skipLauncher", StringComparison.OrdinalIgnoreCase))
+                    {
+                        LaunchFun();
+                    }
+                }
             }
         }
 
@@ -131,16 +153,19 @@ namespace Kingdom_Hearts_2_Launcher
 
         private void Launch_Click(object sender, RoutedEventArgs e)
         {
-
-            if (khddd.IsChecked == true)
+            LaunchFun();
+        }
+        private void LaunchFun(string selectedGame = null)
+        {
+            if (selectedGame != null && selectedGame == "-ddd" || (khddd.IsChecked == true))
             {
                 LaunchGame("KINGDOM HEARTS Dream Drop Distance.exe");
             }
-            else if (bbs02.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-bbs02" || (bbs02.IsChecked == true))
             {
                 LaunchGame("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe");
             }
-            else if (xbackcover.IsChecked == true)
+            else if (selectedGame != null && selectedGame == "-backcover" || (xbackcover.IsChecked == true))
             {
                 string arg = "";
                 if (SkipCopyrightScreenOnMovie)

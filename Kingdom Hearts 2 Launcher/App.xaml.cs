@@ -8,10 +8,15 @@ using System.Windows;
 
 namespace Kingdom_Hearts_2_Launcher
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        [STAThread]
+        public static void Main(string[] args)
+        {
+            Kingdom_Hearts_2_Launcher.App app = new Kingdom_Hearts_2_Launcher.App();
+            app.InitializeComponent();
+            MainWindow mainWindow = new MainWindow(args);
+            app.Run(mainWindow);
+        }
     }
 }
