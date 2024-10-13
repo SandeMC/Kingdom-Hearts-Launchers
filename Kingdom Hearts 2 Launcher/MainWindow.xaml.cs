@@ -36,14 +36,22 @@ namespace Kingdom_Hearts_2_Launcher
             {
                 foreach (var arg in args)
                 {
-                    if (arg.Equals("-dds", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-bbs02", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-backcover", StringComparison.OrdinalIgnoreCase)
-                        )
+                    if (arg.Equals("-ddd", StringComparison.OrdinalIgnoreCase))
                     {
-                        LaunchFun(arg);
+                        khddd.IsChecked = true;
+                        LaunchFun();
                     }
-                    if (arg.Equals("-skipLauncher", StringComparison.OrdinalIgnoreCase))
+                    else if (arg.Equals("-bbs02", StringComparison.OrdinalIgnoreCase))
+                    {
+                        bbs02.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-backcover", StringComparison.OrdinalIgnoreCase))
+                    {
+                        xbackcover.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-skipLauncher", StringComparison.OrdinalIgnoreCase))
                     {
                         LaunchFun();
                     }
@@ -155,17 +163,17 @@ namespace Kingdom_Hearts_2_Launcher
         {
             LaunchFun();
         }
-        private void LaunchFun(string selectedGame = null)
+        private void LaunchFun()
         {
-            if (selectedGame != null && selectedGame == "-ddd" || (khddd.IsChecked == true))
+            if (khddd.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS Dream Drop Distance.exe");
             }
-            else if (selectedGame != null && selectedGame == "-bbs02" || (bbs02.IsChecked == true))
+            else if (bbs02.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS 0.2 Birth by Sleep/Binaries/Win64/KINGDOM HEARTS 0.2 Birth by Sleep.exe");
             }
-            else if (selectedGame != null && selectedGame == "-backcover" || (xbackcover.IsChecked == true))
+            else if (xbackcover.IsChecked == true)
             {
                 string arg = "";
                 if (SkipCopyrightScreenOnMovie)

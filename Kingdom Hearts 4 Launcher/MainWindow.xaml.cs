@@ -38,15 +38,35 @@ namespace Kingdom_Hearts_4_Launcher
             {
                 foreach (var arg in args)
                 {
-                    if (arg.Equals("-kh1", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-recom", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-days", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-kh2", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-bbs", StringComparison.OrdinalIgnoreCase) ||
-                        arg.Equals("-recoded", StringComparison.OrdinalIgnoreCase)
-                        )
+                    if (arg.Equals("-kh1", StringComparison.OrdinalIgnoreCase))
                     {
-                        LaunchFun(arg);
+                        kh1.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-recom", StringComparison.OrdinalIgnoreCase))
+                    {
+                        recom.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-days", StringComparison.OrdinalIgnoreCase))
+                    {
+                        days.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-kh2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        kh2.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-bbs", StringComparison.OrdinalIgnoreCase))
+                    {
+                        bbs.IsChecked = true;
+                        LaunchFun();
+                    }
+                    else if (arg.Equals("-recoded", StringComparison.OrdinalIgnoreCase))
+                    {
+                        recoded.IsChecked = true;
+                        LaunchFun();
                     }
                     else if (arg.Equals("-skipLauncher", StringComparison.OrdinalIgnoreCase))
                     {
@@ -238,9 +258,9 @@ namespace Kingdom_Hearts_4_Launcher
         {
             LaunchFun();
         }
-        private void LaunchFun(string selectedGame = null)
+        private void LaunchFun()
         {
-            if (selectedGame!= null && selectedGame=="-kh1" || (kh1.IsChecked == true))
+            if (kh1.IsChecked == true)
             {
                 string arg = "";
                 if (SkipCopyrightScreenOnKH1)
@@ -249,7 +269,7 @@ namespace Kingdom_Hearts_4_Launcher
                 }
                 LaunchGame("KINGDOM HEARTS FINAL MIX.exe", arg);
             }
-            else if (selectedGame != null && selectedGame == "-recom" || (recom.IsChecked == true))
+            else if (recom.IsChecked == true)
             {
                 if (ComInsteadOfRecom)
                 {
@@ -260,7 +280,7 @@ namespace Kingdom_Hearts_4_Launcher
                     LaunchGame("KINGDOM HEARTS Re_Chain of Memories.exe");
                 }
             }
-            else if (selectedGame != null && selectedGame == "-days" || (days.IsChecked == true))
+            else if (days.IsChecked == true)
             {
                 if (UseMelonMixOnDays)
                 {
@@ -287,15 +307,15 @@ namespace Kingdom_Hearts_4_Launcher
                     LaunchGame("KINGDOM HEARTS HD 1.5+2.5 Launcher.exe", arg);
                 }
             }
-            else if (selectedGame != null && selectedGame == "-kh2" || (kh2.IsChecked == true))
+            else if (kh2.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS II FINAL MIX.exe");
             }
-            else if (selectedGame != null && selectedGame == "-bbs" || (bbs.IsChecked == true))
+            else if (bbs.IsChecked == true)
             {
                 LaunchGame("KINGDOM HEARTS Birth by Sleep FINAL MIX.exe");
             }
-            else if (selectedGame != null && selectedGame == "-recoded" || (recoded.IsChecked == true))
+            else if (recoded.IsChecked == true)
             {
                 if (UseMelonMixOnRecoded)
                 {
